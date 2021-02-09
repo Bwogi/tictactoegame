@@ -25,20 +25,45 @@ winner = None
 currentPlayer = "X"
 
 # ---
+def playGame():
+    displayBoard()
+    while game_still_going: # while the game is still going
+        handleTurn(currentPlayer) # handle a single turn of an arbitrary player
+        checkIfGameOver() # check if the game has ended
+        flipPlayer() # flip to the other player
 
+    if winner == "X" or winner == "O": # the game has ended
+        print(winner + " won.")
+    elif winner == None:
+        print("Tie.")
+
+        
 def displayBoard():
     print(" ")
     print(" -------------  ")
-    print(" | " + board[0] + " | " + board[1] + " | " + board[2] +  " | ")
-    print(" | " + board[3] + " | " + board[4] + " | " + board[5] +  " | ")
-    print(" | " + board[6] + " | " + board[7] + " | " + board[8] +  " | ")
+    print(" | " + board[0] + " | " + board[1] + " | " + board[2] +  " | " + "     1 | 2 | 3")
+    print(" | " + board[3] + " | " + board[4] + " | " + board[5] +  " | " + "     4 | 5 | 6")
+    print(" | " + board[6] + " | " + board[7] + " | " + board[8] +  " | " + "     7 | 8 | 9")
     print(" -------------  ")
     print(" ")
 
 def handleTurn(player):
+    print(player + "'s turn.")
     position = input("Choose a position from 1 - 9 : ")
+
+    valid = False
+    while not valid:
+        while position not in ["1", "2", "3", "4,", "5","6","7","8","9"]:
+            position = input("Choose a position from 1 - 9 : ")
+
     position = int(position) - 1
-    board[position] = "X"
+    if board[position] == "-":
+      valid = True
+    else:
+      print("You can't go there. Go again.")
+
+    board[position] = player
+
     displayBoard()
 
 def checkForWinner():
@@ -112,29 +137,16 @@ def checkDiagonals():
         return board[0]
     elif diagonal2:
         return board[6]
-    return
+    return None
 
 def flipPlayer():
+
     global currentPlayer
+
     if currentPlayer == "X":
         currentPlayer = "O"
     elif currentPlayer == "O":
         currentPlayer = "X"
     return
-
-def playGame():
-    displayBoard()
-    while game_still_going: # while the game is still going
-        handleTurn(currentPlayer) # handle a single turn of an arbitrary player
-        checkIfGameOver() # check if the game has ended
-        flipPlayer() # flip to the other player
-    if winner == "X" or winner == "O": # the game has ended
-        print(winner + " won.")
-    elif winner == None:
-        print("Tie.")
- 
-
-
-
 
 playGame() # play a game of tic tac toe
